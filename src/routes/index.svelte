@@ -2,13 +2,17 @@
     import { Category } from '$lib/categories';
 
     import Column from '$lib/components/column.svelte';
-    import { items } from '$lib/stores';
+    import { items, type ItemType } from '$lib/stores';
 
-    let todos = $items.filter((item) => item.category === Category.Todo);
-    let progress = $items.filter((item) => item.category === Category.Progress);
-    let done = $items.filter((item) => item.category === Category.Done);
+    let todos: ItemType[] = [];
+    let progress: ItemType[] = [];
+    let done: ItemType[] = [];
 
-    $: console.log(todos);
+    $: {
+        todos = $items.filter((item) => item.category === Category.Todo);
+        progress = $items.filter((item) => item.category === Category.Progress);
+        done = $items.filter((item) => item.category === Category.Done);
+    }
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-900 md:h-screen">

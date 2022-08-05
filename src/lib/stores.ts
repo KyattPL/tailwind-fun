@@ -7,29 +7,48 @@ export interface ItemType {
     category: Category
 }
 
-// TODO: jakoś statycznie trzymać maxId i wszystko robić na podtawie id itema
-//      moveToProgress ma dobry syntax i to samo wszędzie indziej
+let currId = 3;
+const startItems: ItemType[] = [];
 
 function createItems() {
-    const { subscribe, set, update } = writable<ItemType[]>([{id: 1, text: 'test', category: Category.Todo}, {id: 2, text: 'okayge', category: Category.Todo}]);
+    const { subscribe, set, update } = writable<ItemType[]>(startItems);
     return {
         subscribe,
-        removeItem: (id: number) => update(n => {n.splice(ind, 1); return n}),
-        addTodo: (text: string) => update(n => {n.push({id: 0,text: text, category: Category.Todo}); return n}),
+        removeItem: (id: number) => update(arr => {
+            const newArr = [...arr];
+            newArr.splice(newArr.findIndex(item => item.id === id), 1);
+            return newArr;
+        }),
+        addTodo: (text: string) => update(arr => {
+            const newArr = [...arr, { id: currId, text: text, category: Category.Todo }];
+            currId += 1;
+            return newArr;
+        }),
         moveToProgress: (id: number) => {
             update(arr => {
                 const newArr = [...arr];
-                newArr[ind].category = Category.Progress;
+                newArr[newArr.findIndex(item => item.id === id)].category = Category.Progress;
                 console.log(newArr);
                 return newArr;
-            })
+            });
         },
         moveToTodo: (id: number) => {
-            update(n => {n[ind].category = Category.Todo; return n});
+            update(arr => {
+                const newArr = [...arr];
+                newArr[newArr.findIndex(item => item.id === id)].category = Category.Todo;
+                console.log(newArr);
+                return newArr;
+            });
         },
         moveToDone: (id: number) => {
-            update(n => {n[ind].category = Category.Done; return n});
-        }
+            update(arr => {
+                const newArr = [...arr];
+                newArr[newArr.findIndex(item => item.id === id)].category = Category.Done;
+                console.log(newArr);
+                return newArr;
+            });
+        },
+        setItems: (loadedItems: ItemType[]) => set(loadedItems)
     };
 }
 

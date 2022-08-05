@@ -15,7 +15,7 @@
     }
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-900 md:h-screen">
+<div class="grid grid-cols-1 h-screen lg:grid-cols-3 gap-3 bg-slate-900">
     <Column colName="TODO" colItems={todos} type={Category.Todo} />
     <Column colName="IN PROGRESS" colItems={progress} type={Category.Progress} />
     <Column colName="DONE" colItems={done} type={Category.Done} />
